@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.zhuyue.permissioncheck.ui.CheckActivity">
+
+    <Button
+        android:id="@+id/bt_camera"
+        style="@style/bt_style"
+        android:onClick="OnCamera"
+        android:text="拍照" />
+
+    <Button
+        android:id="@+id/bt_callphone"
+        style="@style/bt_style"
+        android:onClick="OnCallPhone"
+        android:text="打电话" />
+
+
+</LinearLayout>
