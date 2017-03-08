@@ -1,6 +1,8 @@
 package com.zhuyue.permissioncheck.ui;
 
 import android.Manifest;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
 
 import com.zhuyue.permissioncheck.R;
@@ -38,7 +40,16 @@ public class CheckPermissionActivity extends BasePermissioActivity {
 
     @Override
     public void grant(Object source, int requestCode) {
-
+        if (requestCode == 0x0003) {
+            Intent intent = new Intent(); //调用照相机
+            intent.setAction("android.media.action.STILL_IMAGE_CAMERA");
+            startActivity(intent);
+        } else if (requestCode == 0x0001) {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_CALL);
+            intent.setData(Uri.parse("tel:13045020882"));
+            startActivity(intent);
+        }
     }
 
     @Override

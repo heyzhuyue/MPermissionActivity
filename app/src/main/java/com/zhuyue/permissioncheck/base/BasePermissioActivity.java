@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import com.zhuyue.permissionlib.CheckPermissionStateInterface;
+import com.zhuyue.permissionlib.PermissionCheck;
 
 /**
  * Created by win7 on 2017/3/8.
@@ -26,6 +28,12 @@ public abstract class BasePermissioActivity extends AppCompatActivity implements
     @Override
     public void denied(Object source, int requestCode) {
         showRequestPermissionFailHint();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionCheck.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
     }
 
     /**
