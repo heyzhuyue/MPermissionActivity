@@ -15,8 +15,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.zhuyue.permissionlib.PermissionCheck;
-
 import java.util.ArrayList;
 import java.util.List;
 
