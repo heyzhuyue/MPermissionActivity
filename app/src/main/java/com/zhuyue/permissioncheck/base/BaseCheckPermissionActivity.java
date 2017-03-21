@@ -20,15 +20,17 @@ import java.util.List;
 
 /**
  * Created by win7 on 2017/3/8.
- */
-
-/**
+ * <p>
  * 运行时权限方法说明
  * <p>
  * ① ContextCompat.checkSelfPermission  用于检测某个权限是否已经被授予，方法返回值为PackageManager.PERMISSION_DENIED或者PackageManager.PERMISSION_GRANTED，当返回DENIED就需要进行申请授权了
  * ② ActivityCompat.shouldShowRequestPermissionRationale 这个API主要用于给用户一个申请权限的解释，该方法只有在用户在上一次已经拒绝过你的这个权限申请。也就是说，用户已经拒绝一次了，你又弹个授权框，你需要给用户一个解释，为什么要授权，则使用该方法。
  * ③ ActivityCompat.requestPermissions  权限申请 支持多个权限申请,系统会根据权限逐一向用户询问授权
  * ④ onRequestPermissionsResult  权限申请回调
+ * <p>
+ * PackageManager中的两个常量:
+ * 1.PackageManager.PERMISSION_DENIED: 该权限是被拒绝的
+ * 2.PackageManager.PERMISSION_GRANTED: 该权限是被授权的
  */
 
 public abstract class BaseCheckPermissionActivity extends AppCompatActivity {
@@ -102,8 +104,8 @@ public abstract class BaseCheckPermissionActivity extends AppCompatActivity {
             return true;
         }
         for (String permission : permissions) {
-            if (ContextCompat.checkSelfPermission(this, permission) !=
-                    PackageManager.PERMISSION_GRANTED) {
+            int state = ContextCompat.checkSelfPermission(this, permission);
+            if (state != PackageManager.PERMISSION_GRANTED) {
                 return false;
             }
         }

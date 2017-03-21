@@ -15,8 +15,23 @@
     <Button
         android:id="@+id/bt_callphone"
         style="@style/bt_style"
+        android:layout_marginTop="20dp"
         android:onClick="OnCallPhone"
         android:text="打电话" />
+
+    <Button
+        android:id="@+id/bt_calendar"
+        style="@style/bt_style"
+        android:layout_marginTop="20dp"
+        android:onClick="OnCalendar"
+        android:text="读取日程" />
+
+    <Button
+        android:id="@+id/bt_note"
+        style="@style/bt_style"
+        android:layout_marginTop="20dp"
+        android:onClick="OnNote"
+        android:text="申请短信联系人多个权限" />
 
 
 </LinearLayout>
