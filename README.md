@@ -114,3 +114,5 @@ WRITE_SYNC_SETTINGS
 
 [运行时权限封装](http://blog.csdn.net/linglongxin24/article/details/53189359)
 
+[运行时权限讲解](http://blog.csdn.net/yanzhenjie1003/article/details/52503533/)
+
