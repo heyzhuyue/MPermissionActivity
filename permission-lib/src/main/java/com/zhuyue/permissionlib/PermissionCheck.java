@@ -18,6 +18,7 @@ import java.util.List;
 public class PermissionCheck {
 
     private static final String TAG = "PermissionCheck";
+    private static final String SUFFIX = "$$PermissionProxy";
 
     /**
      * 获取运行时权限
@@ -122,10 +123,11 @@ public class PermissionCheck {
      * @param reuqestCode 运行时权限呵验证Code
      */
     private static void requestPermissionSucess(Object activity, int reuqestCode) {
-        if (CheckPermissionUtils.getActivity(activity) instanceof CheckPermissionStateInterface) {
-            CheckPermissionStateInterface checkPermissionStateInterface = (CheckPermissionStateInterface) CheckPermissionUtils.getActivity(activity);
-            checkPermissionStateInterface.grant(activity, reuqestCode);
-        }
+//        if (CheckPermissionUtils.getActivity(activity) instanceof CheckPermissionStateInterface) {
+//            CheckPermissionStateInterface checkPermissionStateInterface = (CheckPermissionStateInterface) CheckPermissionUtils.getActivity(activity);
+//            checkPermissionStateInterface.grant(activity, reuqestCode);
+//        }
+        findPermissionProxy(activity).grant(activity, reuqestCode);
     }
 
     /**
@@ -135,10 +137,33 @@ public class PermissionCheck {
      * @param reuqestCode 运行时权限呵验证Code
      */
     private static void requestPermissionFail(Object activity, int reuqestCode) {
-        if (CheckPermissionUtils.getActivity(activity) instanceof CheckPermissionStateInterface) {
-            CheckPermissionStateInterface checkPermissionStateInterface = (CheckPermissionStateInterface) CheckPermissionUtils.getActivity(activity);
-            checkPermissionStateInterface.denied(activity, reuqestCode);
+//        if (CheckPermissionUtils.getActivity(activity) instanceof CheckPermissionStateInterface) {
+//            CheckPermissionStateInterface checkPermissionStateInterface = (CheckPermissionStateInterface) CheckPermissionUtils.getActivity(activity);
+//            checkPermissionStateInterface.denied(activity, reuqestCode);
+//        }
+        findPermissionProxy(activity).denied(activity, reuqestCode);
+    }
+
+
+    /**
+     * 查找实现
+     *
+     * @param activity
+     * @return
+     */
+    private static CheckPermissionStateInterface findPermissionProxy(Object activity) {
+        try {
+            Class clazz = activity.getClass();
+            Class injectorClazz = Class.forName(clazz.getName() + SUFFIX);
+            return (CheckPermissionStateInterface) injectorClazz.newInstance();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
+        throw new RuntimeException(String.format("can not find %s , something when compiler.", activity.getClass().getSimpleName() + SUFFIX));
     }
 
 }
