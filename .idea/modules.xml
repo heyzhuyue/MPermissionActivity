@@ -3,10 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MPermissionActivity.iml" filepath="$PROJECT_DIR$/MPermissionActivity.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/compiler/compiler.iml" filepath="$PROJECT_DIR$/compiler/compiler.iml" />
       <module fileurl="file://$PROJECT_DIR$/permission-annotation/permission-annotation.iml" filepath="$PROJECT_DIR$/permission-annotation/permission-annotation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/permission-compiler/permission-compiler.iml" filepath="$PROJECT_DIR$/permission-compiler/permission-compiler.iml" />
       <module fileurl="file://$PROJECT_DIR$/permission-lib/permission-lib.iml" filepath="$PROJECT_DIR$/permission-lib/permission-lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/permission-sample/permission-sample.iml" filepath="$PROJECT_DIR$/permission-sample/permission-sample.iml" />
     </modules>
   </component>
 </project>

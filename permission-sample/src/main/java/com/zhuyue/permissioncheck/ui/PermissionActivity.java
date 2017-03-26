@@ -13,13 +13,31 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.zhuyue.permissioncheck.R;
-import com.zhuyue.permissioncheck.base.BaseCheckPermissionActivity;
+import com.zhuyue.permissioncheck.base.BasePermissionActivity;
 
-public class CheckActivity extends BaseCheckPermissionActivity {
+public class PermissionActivity extends BasePermissionActivity {
 
-    private static final String TAG = "CheckActivity";
-    private static final int REQUSTCODE = 12;//读取联系人电话
+    private static final String TAG = "PermissionActivity";
+    /**
+     * 相机权限Code
+     */
+    private final int CAMERA_CODE = 0x0001;
+    /**
+     * 电话权限Code
+     */
+    private final int PHONE_CODE = 0x0002;
+    /**
+     * 联系人Code
+     */
+    private final int CONTACTS_CODE = 0x0003;
+    /**
+     * 日期Code
+     */
+    private final int CALENDAR_CODE = 0x0004;
+
     private String calanderURL = "content://com.android.calendar/calendars";
+
+    private final int CONTACTS_RESULT_CODE = 100;
 
     @Override
     public int getLayoutId() {
@@ -35,7 +53,7 @@ public class CheckActivity extends BaseCheckPermissionActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case REQUSTCODE:
+            case CONTACTS_RESULT_CODE:
                 if (resultCode == Activity.RESULT_OK) {
                     Uri conatctData = data.getData();
                     Cursor cursor = managedQuery(conatctData, null, null, null, null);
@@ -47,7 +65,7 @@ public class CheckActivity extends BaseCheckPermissionActivity {
                         if (phones.moveToFirst()) {
                             phonenum = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                         }
-                        Toast.makeText(CheckActivity.this, "联系人：" + name + "\n电话：" + phonenum, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PermissionActivity.this, "联系人：" + name + "\n电话：" + phonenum, Toast.LENGTH_SHORT).show();
                         if (Build.VERSION.SDK_INT < 14) {
                             phones.close();
                         }
@@ -68,7 +86,7 @@ public class CheckActivity extends BaseCheckPermissionActivity {
      * @param view
      */
     public void OnCamera(View view) {
-        requestPermission(new String[]{Manifest.permission.CAMERA}, 0x0001);
+        requestPermission(new String[]{Manifest.permission.CAMERA}, CAMERA_CODE);
     }
 
     /**
@@ -77,57 +95,64 @@ public class CheckActivity extends BaseCheckPermissionActivity {
      * @param view
      */
     public void OnCallPhone(View view) {
-        requestPermission(new String[]{Manifest.permission.CALL_PHONE}, 0x0002);
+        requestPermission(new String[]{Manifest.permission.CALL_PHONE}, PHONE_CODE);
     }
 
     /**
-     * 短信,联系人权限
+     * 联系人权限
      *
      * @param view
      */
     public void OnNote(View view) {
-        requestPermission(new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS}, 0x0003);
+        requestPermission(new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS}, CONTACTS_CODE);
     }
 
     /**
-     * r读取日程权限
+     * 读取日程权限
      *
      * @param view
      */
     public void OnCalendar(View view) {
-        requestPermission(new String[]{Manifest.permission.READ_CALENDAR}, 0x0004);
+        requestPermission(new String[]{Manifest.permission.READ_CALENDAR}, CALENDAR_CODE);
     }
 
     @Override
     public void requestPermissionSucess(int requestCode) {
         super.requestPermissionSucess(requestCode);
-        if (requestCode == 0x0001) {
-            Intent cameraIntent = new Intent(); //调用照相机
-            cameraIntent.setAction("android.media.action.STILL_IMAGE_CAMERA");
-            startActivity(cameraIntent);
-        } else if (requestCode == 0x0002) {
-            Intent phoenIntent = new Intent();
-            phoenIntent.setAction(Intent.ACTION_CALL);
-            phoenIntent.setData(Uri.parse("tel:13045020882"));
-            startActivity(phoenIntent);
-        } else if (requestCode == 0x0003) {
-            Intent intent3 = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-            startActivityForResult(intent3, REQUSTCODE);//请求码自己定义
-        } else if (requestCode == 0x0004) {
-            if (Build.VERSION.SDK_INT >= 8) {
-                calanderURL = "content://com.android.calendar/calendars";
-            } else {
-                calanderURL = "content://calendar/calendars";
-            }
-            Cursor userCursor = getContentResolver().query(
-                    Uri.parse(calanderURL), null, null, null, null);
-            if (userCursor.getCount() > 0) {
-                userCursor.moveToFirst();
-                String userName = userCursor.getString(userCursor
-                        .getColumnIndex("name"));
-                Toast.makeText(CheckActivity.this, userName, Toast.LENGTH_LONG)
-                        .show();
-            }
+        switch (requestCode) {
+            case CAMERA_CODE:
+                Intent cameraIntent = new Intent(); //调用照相机
+                cameraIntent.setAction("android.media.action.STILL_IMAGE_CAMERA");
+                startActivity(cameraIntent);
+                break;
+            case PHONE_CODE:
+                Intent phoenIntent = new Intent();
+                phoenIntent.setAction(Intent.ACTION_CALL);
+                phoenIntent.setData(Uri.parse("tel:13045020882"));
+                startActivity(phoenIntent);
+                break;
+            case CONTACTS_CODE:
+                Intent intent3 = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                startActivityForResult(intent3, CONTACTS_RESULT_CODE);//请求码自己定义
+                break;
+            case CALENDAR_CODE:
+                if (Build.VERSION.SDK_INT >= 8) {
+                    calanderURL = "content://com.android.calendar/calendars";
+                } else {
+                    calanderURL = "content://calendar/calendars";
+                }
+                Cursor userCursor = getContentResolver().query(
+                        Uri.parse(calanderURL), null, null, null, null);
+                if (userCursor.getCount() > 0) {
+                    userCursor.moveToFirst();
+                    String userName = userCursor.getString(userCursor
+                            .getColumnIndex("name"));
+                    Toast.makeText(PermissionActivity.this, userName, Toast.LENGTH_LONG)
+                            .show();
+                }
+                break;
+            default:
+                break;
         }
     }
 }

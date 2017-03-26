@@ -116,3 +116,8 @@ WRITE_SYNC_SETTINGS
 
 [运行时权限讲解](http://blog.csdn.net/yanzhenjie1003/article/details/52503533/)
 
+## 后期项目维护
+
+* 相机权限可以集合二维码扫描功能
+* 录音，读写sd卡权限可以集成语音录制功能
+* 联系人可以实现一个通讯录界面

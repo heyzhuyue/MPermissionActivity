@@ -10,14 +10,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
-import com.zhuyue.permissionlib.CheckPermissionStateInterface;
 import com.zhuyue.permissionlib.PermissionCheck;
+import com.zhuyue.permissionlib.PermissionProxy;
 
 /**
  * Created by win7 on 2017/3/8.
  */
 
-public abstract class BasePermissioActivity extends AppCompatActivity implements CheckPermissionStateInterface {
+public abstract class BaseCheckPermissioActivity extends AppCompatActivity implements PermissionProxy {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -33,9 +33,9 @@ import java.util.List;
  * 2.PackageManager.PERMISSION_GRANTED: 该权限是被授权的
  */
 
-public abstract class BaseCheckPermissionActivity extends AppCompatActivity {
+public abstract class BasePermissionActivity extends AppCompatActivity {
 
-    private static final String TAG = "BaseCheckPermissionActivity";
+    private static final String TAG = "BasePermissionActivity";
     /**
      * 权限申请自定义RequestCode,用于权限申请验证Code
      */

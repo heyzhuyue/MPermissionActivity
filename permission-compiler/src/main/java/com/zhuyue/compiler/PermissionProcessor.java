@@ -18,6 +18,7 @@ import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
@@ -28,30 +29,22 @@ import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
-/**
- * Created by win7 on 2017/3/24.
- */
-
-@AutoService(ProxyInfo.class)
+@AutoService(Processor.class)
 public class PermissionProcessor extends AbstractProcessor {
-    private Messager messager;
-    private Elements elementUtils;
+
+    private Messager mMessager;
+    private Elements mElementUtils;
+    private Filer mFilerUtils;
     private Map<String, ProxyInfo> mProxyMap = new HashMap<String, ProxyInfo>();
-    private Filer mFilerUtis;
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
-        messager = processingEnv.getMessager();
-        elementUtils = processingEnv.getElementUtils();
-        mFilerUtis = processingEnv.getFiler();
+        mMessager = processingEnv.getMessager();
+        mElementUtils = processingEnv.getElementUtils();
+        mFilerUtils = processingEnv.getFiler();
     }
 
-    /**
-     * 返回支持源码类型
-     *
-     * @return
-     */
     @Override
     public Set<String> getSupportedAnnotationTypes() {
         HashSet<String> supportTypes = new LinkedHashSet<>();
@@ -61,11 +54,6 @@ public class PermissionProcessor extends AbstractProcessor {
         return supportTypes;
     }
 
-    /**
-     * 返回支持的源码版本
-     *
-     * @return
-     */
     @Override
     public SourceVersion getSupportedSourceVersion() {
         return SourceVersion.latestSupported();
@@ -74,7 +62,7 @@ public class PermissionProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         mProxyMap.clear();
-        messager.printMessage(Diagnostic.Kind.NOTE, "process...");
+        mMessager.printMessage(Diagnostic.Kind.NOTE, "process...");
 
         if (!processAnnotations(roundEnv, PermissionGrant.class)) return false;
         if (!processAnnotations(roundEnv, PermissionDenied.class)) return false;
@@ -101,13 +89,6 @@ public class PermissionProcessor extends AbstractProcessor {
         return true;
     }
 
-    /**
-     * 处理Annotations
-     *
-     * @param roundEnv
-     * @param clazz
-     * @return
-     */
     private boolean processAnnotations(RoundEnvironment roundEnv, Class<? extends Annotation> clazz) {
         for (Element annotatedElement : roundEnv.getElementsAnnotatedWith(clazz)) {
 
@@ -121,7 +102,7 @@ public class PermissionProcessor extends AbstractProcessor {
 
             ProxyInfo proxyInfo = mProxyMap.get(fqClassName);
             if (proxyInfo == null) {
-                proxyInfo = new ProxyInfo(elementUtils, classElement);
+                proxyInfo = new ProxyInfo(mElementUtils, classElement);
                 mProxyMap.put(fqClassName, proxyInfo);
                 proxyInfo.setTypeElement(classElement);
             }
@@ -154,13 +135,6 @@ public class PermissionProcessor extends AbstractProcessor {
         processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, message, element);
     }
 
-    /**
-     * 检测方法合法性
-     *
-     * @param annotatedElement
-     * @param clazz
-     * @return
-     */
     private boolean checkMethodValid(Element annotatedElement, Class clazz) {
         if (annotatedElement.getKind() != ElementKind.METHOD) {
             error(annotatedElement, "%s must be declared on method.", clazz.getSimpleName());
@@ -173,4 +147,5 @@ public class PermissionProcessor extends AbstractProcessor {
 
         return true;
     }
+
 }

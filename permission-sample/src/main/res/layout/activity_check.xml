@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.zhuyue.permissioncheck.ui.CheckActivity">
+    tools:context="com.zhuyue.permissioncheck.ui.PermissionActivity">
 
     <Button
         android:id="@+id/bt_camera"
@@ -31,7 +31,7 @@
         style="@style/bt_style"
         android:layout_marginTop="20dp"
         android:onClick="OnNote"
-        android:text="申请短信联系人多个权限" />
+        android:text="联系人权限" />
 
 
 </LinearLayout>

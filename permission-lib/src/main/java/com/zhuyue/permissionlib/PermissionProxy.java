@@ -1,13 +1,11 @@
 package com.zhuyue.permissionlib;
 
 /**
- * Created by zhuyue on 2017/3/8.
+ * Created by zhy on 16/2/21.
  */
-
-public interface CheckPermissionStateInterface<T> {
-
+public interface PermissionProxy<T> {
     /**
-     * 授予权限
+     * 授予
      *
      * @param source
      * @param requestCode
@@ -15,7 +13,7 @@ public interface CheckPermissionStateInterface<T> {
     void grant(T source, int requestCode);
 
     /**
-     * 拒绝授予权限
+     * 拒绝
      *
      * @param source
      * @param requestCode
@@ -23,10 +21,12 @@ public interface CheckPermissionStateInterface<T> {
     void denied(T source, int requestCode);
 
     /**
-     * 用户拒绝授权一次,再次获取此权限，向用户解释权限意义
+     * 阐述授权理由
      *
      * @param source
      * @param requestCode
      */
     void rationale(T source, int requestCode);
+
+    boolean needShowRationale(int requestCode);
 }

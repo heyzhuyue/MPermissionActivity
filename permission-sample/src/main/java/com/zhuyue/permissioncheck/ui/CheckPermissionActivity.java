@@ -11,24 +11,42 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.zhuyue.permissioncheck.R;
-import com.zhuyue.permissioncheck.base.BasePermissioActivity;
+import com.zhuyue.permissioncheck.base.BaseCheckPermissioActivity;
 import com.zhuyue.permissionlib.PermissionCheck;
 
 /**
  * Created by win7 on 2017/3/8.
  */
 
-public class CheckPermissionActivity extends BasePermissioActivity {
+public class CheckPermissionActivity extends BaseCheckPermissioActivity {
 
-    private static final int REQUSTCODE = 12;//读取联系人电话
+    /**
+     * 相机权限Code
+     */
+    private final int CAMERA_CODE = 0x0001;
+    /**
+     * 电话权限Code
+     */
+    private final int PHONE_CODE = 0x0002;
+    /**
+     * 联系人Code
+     */
+    private final int CONTACTS_CODE = 0x0003;
+    /**
+     * 日期Code
+     */
+    private final int CALENDAR_CODE = 0x0004;
+
     private String calanderURL = "content://com.android.calendar/calendars";
+
+    private final int CONTACTS_RESULT_CODE = 100;
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case REQUSTCODE:
+            case CONTACTS_RESULT_CODE:
                 if (resultCode == Activity.RESULT_OK) {
                     Uri conatctData = data.getData();
                     Cursor cursor = managedQuery(conatctData, null, null, null, null);
@@ -66,7 +84,7 @@ public class CheckPermissionActivity extends BasePermissioActivity {
      * @param view
      */
     public void OnCamera(View view) {
-        PermissionCheck.requestPermission(CheckPermissionActivity.this, 0x0001, new String[]{Manifest.permission.CAMERA});
+        PermissionCheck.requestPermission(CheckPermissionActivity.this, CAMERA_CODE, new String[]{Manifest.permission.CAMERA});
     }
 
     /**
@@ -75,16 +93,16 @@ public class CheckPermissionActivity extends BasePermissioActivity {
      * @param view
      */
     public void OnCallPhone(View view) {
-        PermissionCheck.requestPermission(CheckPermissionActivity.this, 0x0002, new String[]{Manifest.permission.CALL_PHONE});
+        PermissionCheck.requestPermission(CheckPermissionActivity.this, PHONE_CODE, new String[]{Manifest.permission.CALL_PHONE});
     }
 
     /**
-     * 短信,联系人权限
+     * 联系人权限
      *
      * @param view
      */
     public void OnNote(View view) {
-        PermissionCheck.requestPermission(CheckPermissionActivity.this, 0x0003, new String[]{Manifest.permission.READ_CONTACTS});
+        PermissionCheck.requestPermission(CheckPermissionActivity.this, CONTACTS_CODE, new String[]{Manifest.permission.READ_CONTACTS});
     }
 
     /**
@@ -93,43 +111,55 @@ public class CheckPermissionActivity extends BasePermissioActivity {
      * @param view
      */
     public void OnCalendar(View view) {
-        PermissionCheck.requestPermission(CheckPermissionActivity.this, 0x0004, new String[]{Manifest.permission.READ_CALENDAR});
+        PermissionCheck.requestPermission(CheckPermissionActivity.this, CALENDAR_CODE, new String[]{Manifest.permission.READ_CALENDAR});
     }
 
     @Override
     public void grant(Object source, int requestCode) {
-        if (requestCode == 0x0003) {
-            Intent intent = new Intent(); //调用照相机
-            intent.setAction("android.media.action.STILL_IMAGE_CAMERA");
-            startActivity(intent);
-        } else if (requestCode == 0x0001) {
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_CALL);
-            intent.setData(Uri.parse("tel:13045020882"));
-            startActivity(intent);
-        } else if (requestCode == 0x0003) {
-            Intent intent3 = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-            startActivityForResult(intent3, REQUSTCODE);//请求码自己定义
-        } else if (requestCode == 0x0004) {
-            if (Build.VERSION.SDK_INT >= 8) {
-                calanderURL = "content://com.android.calendar/calendars";
-            } else {
-                calanderURL = "content://calendar/calendars";
-            }
-            Cursor userCursor = getContentResolver().query(
-                    Uri.parse(calanderURL), null, null, null, null);
-            if (userCursor.getCount() > 0) {
-                userCursor.moveToFirst();
-                String userName = userCursor.getString(userCursor
-                        .getColumnIndex("name"));
-                Toast.makeText(CheckPermissionActivity.this, userName, Toast.LENGTH_LONG)
-                        .show();
-            }
+        switch (requestCode) {
+            case CAMERA_CODE:
+                Intent cameraIntent = new Intent(); //调用照相机
+                cameraIntent.setAction("android.media.action.STILL_IMAGE_CAMERA");
+                startActivity(cameraIntent);
+                break;
+            case PHONE_CODE:
+                Intent phoenIntent = new Intent();
+                phoenIntent.setAction(Intent.ACTION_CALL);
+                phoenIntent.setData(Uri.parse("tel:13045020882"));
+                startActivity(phoenIntent);
+                break;
+            case CONTACTS_CODE:
+                Intent intent3 = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                startActivityForResult(intent3, CONTACTS_RESULT_CODE);//请求码自己定义
+                break;
+            case CALENDAR_CODE:
+                if (Build.VERSION.SDK_INT >= 8) {
+                    calanderURL = "content://com.android.calendar/calendars";
+                } else {
+                    calanderURL = "content://calendar/calendars";
+                }
+                Cursor userCursor = getContentResolver().query(
+                        Uri.parse(calanderURL), null, null, null, null);
+                if (userCursor.getCount() > 0) {
+                    userCursor.moveToFirst();
+                    String userName = userCursor.getString(userCursor
+                            .getColumnIndex("name"));
+                    Toast.makeText(CheckPermissionActivity.this, userName, Toast.LENGTH_LONG)
+                            .show();
+                }
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     public void rationale(Object source, int requestCode) {
 
+    }
+
+    @Override
+    public boolean needShowRationale(int requestCode) {
+        return false;
     }
 }
