@@ -7,10 +7,16 @@
     tools:context="com.zhuyue.permissioncheck.ui.PermissionActivity">
 
     <Button
-        android:id="@+id/bt_camera"
+        android:id="@+id/bt_record"
         style="@style/bt_style"
-        android:onClick="OnCamera"
-        android:text="拍照" />
+        android:onClick="OnRecord"
+        android:text="录音" />
+
+    <Button
+        android:id="@+id/bt_alum"
+        style="@style/bt_style"
+        android:onClick="OnAlum"
+        android:text="相册选择" />
 
 
 </LinearLayout>
