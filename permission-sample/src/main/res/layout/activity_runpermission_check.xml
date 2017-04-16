@@ -9,14 +9,22 @@
     <Button
         android:id="@+id/bt_record"
         style="@style/bt_style"
+        android:layout_marginTop="10dp"
         android:onClick="OnRecord"
-        android:text="录音" />
+        android:text="@string/bt_record" />
 
     <Button
         android:id="@+id/bt_alum"
         style="@style/bt_style"
+        android:layout_marginTop="10dp"
         android:onClick="OnAlum"
-        android:text="相册选择" />
+        android:text="@string/bt_alum" />
+
+    <ImageView
+        android:id="@+id/img_photo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal" />
 
 
 </LinearLayout>

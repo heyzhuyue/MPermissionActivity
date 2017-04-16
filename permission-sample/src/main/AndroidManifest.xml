@@ -43,7 +43,7 @@
         </activity>
 
         <activity android:name=".ui.record.RecordActivity" />
-        <activity android:name=".ui.alum.AlumActivity" />
+        <activity android:name=".ui.alum.ui.CropImageActivity" />
 
     </application>
 

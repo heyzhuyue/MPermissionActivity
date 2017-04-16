@@ -11,7 +11,7 @@
     <style name="bt_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@android:color/holo_red_light</item>
+        <item name="android:background">@drawable/bt_style</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
@@ -28,6 +28,14 @@
         <!-- 背景透明 -->
         <!-- <item name="android:backgroundDimEnabled">false</item> -->
         <!-- 模糊 -->
+    </style>
+
+    <!-- 自定义dialog样式-->
+    <style name="Dialog" parent="android:style/Theme.Dialog">
+        <item name="android:background">#00000000</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
     </style>
 
 </resources>
