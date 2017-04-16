@@ -12,10 +12,36 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    buildTypes {
+
+    //签名配置
+    signingConfigs {
         release {
+            storeFile file("wz_live.jks")
+            storePassword "wz123456"
+            keyAlias "release"
+            keyPassword "wz123456"
+        }
+        debug {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('C:\\Users\\win7\\.android\\debug.keystore')
+            storePassword 'android'
+        }
+    }
+
+    buildTypes {
+        //发布配置
+        release {
+            //是否混淆
             minifyEnabled false
+            signingConfig signingConfigs.release
+            //混淆文件路径
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        //调试配置
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.debug
         }
     }
 }
